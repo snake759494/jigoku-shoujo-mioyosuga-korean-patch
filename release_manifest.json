@@ -1,17 +1,17 @@
 {
- "version": "v1.0",
- "date": "2026-09-26",
+ "version": "v1.0.1",
+ "date": "2026-09-29",
  "game": "Jigoku Shoujo Mioyosuga (Japan) / SLPM-55213 / PS2",
- "asset": "Jigoku_Shoujo_Mioyosuga_PS2_KO_v1.0.xdelta",
- "asset_size": 32190157,
- "asset_sha256": "ee41aec514a2c4b5f0e4334dc2943deef62b55d0c81bcf33e78d7916ec632e1e",
+ "asset": "Jigoku_Shoujo_Mioyosuga_PS2_KO_v1.0.1.xdelta",
+ "asset_size": 19607698,
+ "asset_sha256": "0917540aca47d45be1d1ba23cfdcaefd850a4154bb726158df79e98bbda3a070",
  "xdelta_options": "xdelta3 3.1.0, -e -9 -S none -A (no secondary compression, no application header)",
  "source_iso_size": 1534787584,
  "source_iso_md5": "04036956b9319fbd217d3deeac79d8e1",
  "source_iso_sha1": "f119f85a2e0999e62c102ca45b2e3f6114b86c37",
  "source_iso_sha256": "942edac33f7b8be0ab571fb5fd92d93fb6a3ffd9d6229a2f6441ed0f3bb3e0c1",
  "output_iso_size": 1534787584,
- "output_iso_md5": "11973da8058da814d757503680c26ed3",
- "output_iso_sha1": "ac339d228a315a141ac935cedac9e42d477072c3",
- "output_iso_sha256": "d471cefe7d2c75b56adc87490ca6176815c95578849e92f9771e4d3255ced967"
+ "output_iso_md5": "aec58d9132dba124c3c820ecc28a2048",
+ "output_iso_sha1": "0953ab4d7333269430f107320bbabd08b1d7f36d",
+ "output_iso_sha256": "07c3ff72d45eb63e7e631a9966f975b20e679cfe91c14d48b686676aee7efc39"
 }

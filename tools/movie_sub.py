@@ -69,7 +69,7 @@ def encode(frames, q, maxrate):
     cmd = [FFMPEG, '-hide_banner', '-loglevel', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgb24',
            '-s', '%dx%d' % (W, H), '-r', '30000/1001', '-i', '-',
            '-c:v', 'mpeg2video', '-pix_fmt', 'yuv420p', '-qscale:v', str(q), '-qmin', '1', '-qmax', '28',
-           '-g', str(GOP), '-bf', '2', '-flags', '+cgop+ildct+ilme', '-top', '1', '-sc_threshold', '1000000000',
+           '-g', str(GOP), '-bf', '2', '-flags', '+ildct+ilme', '-top', '1', '-sc_threshold', '1000000000',
            '-alternate_scan', '1', '-intra_vlc', '1', '-non_linear_quant', '1', '-dc', '9',
            '-maxrate', str(maxrate), '-bufsize', '1835008', '-aspect', '4:3', '-seq_disp_ext', 'never',
            '-f', 'mpeg2video', '-']
@@ -82,6 +82,32 @@ def encode(frames, q, maxrate):
 def bitrate(es):
     i = es.find(b'\x00\x00\x01\xb3'); h = es[i + 4:i + 12]
     return (h[4] << 10 | h[5] << 2 | h[6] >> 6) * 400
+
+
+def pic_starts(es):
+    r, i = [], 0
+    while True:
+        i = es.find(b'\x00\x00\x01\x00', i)
+        if i < 0: return r
+        r.append(i); i += 4
+
+
+def align(orig, enc, lat=0):
+    """Pad `enc` with zeros so every coded picture starts at the same byte offset as in `orig`
+    (and the total length is equal). The PS2 stream player feeds video/audio in mux order, so picture
+    data must arrive neither later nor far earlier than the original. A picture may run at most `lat`
+    bytes past its original end (re-aligned at the next picture). None if that is exceeded."""
+    po, pn = pic_starts(orig), pic_starts(enc)
+    if len(po) != len(pn): return None
+    bo, bn = po + [len(orig)], pn + [len(enc)]
+    out = bytearray(enc[:pn[0]])
+    if len(out) > po[0] + lat: return None
+    out += b'\x00' * max(0, po[0] - len(out))
+    for k in range(len(pn)):
+        out += enc[bn[k]:bn[k + 1]]
+        if len(out) > bo[k + 1] + (lat if k + 1 < len(pn) else 0): return None
+        out += b'\x00' * max(0, bo[k + 1] - len(out))
+    return bytes(out)
 
 
 def process(name):
@@ -97,35 +123,45 @@ def process(name):
         if hit[g]:
             h = g
             while h + 1 < len(gops) and hit[h + 1]: h += 1
+            h = min(h + 1, len(gops) - 1)   # next GOP is open (leading B refs our last P): re-encode it too
             runs.append((g, h)); g = h + 1
         else: g += 1
-    need = set()
-    for a, b in runs: need.update(range(first[a], first[b + 1]))
-    frames, cache = {}, {}
+    # decode every frame (subtitles composited) - each run is encoded from the start of the stream so that
+    # ffmpeg's open-GOP layout (first GOP 13 pictures, then IBBPBBPBBPBBPBB) matches the original exactly
+    last = min(total, int(first[min(len(gops), runs[-1][1] + 3)])) if runs else 0
+    frames, cache = [], {}
     tmp = os.path.join(M, 'enc', name + '.m2v'); os.makedirs(os.path.dirname(tmp), exist_ok=True)
     open(tmp, 'wb').write(es)
     c = av.open(tmp)
     for i, fr in enumerate(c.decode(video=0)):
-        if i in need:
-            img = fr.to_ndarray(format='rgb24'); t = sub_at[i]
-            if t:
-                if t not in cache: cache[t] = render(t)
-                base = Image.fromarray(img).convert('RGBA'); base.alpha_composite(cache[t])
-                img = np.asarray(base.convert('RGB'))
-            frames[i] = img
+        if i >= last: break
+        img = fr.to_ndarray(format='rgb24'); t = sub_at[i]
+        if t:
+            if t not in cache: cache[t] = render(t)
+            base = Image.fromarray(img).convert('RGBA'); base.alpha_composite(cache[t])
+            img = np.asarray(base.convert('RGB'))
+        frames.append(img)
     c.close(); os.remove(tmp)
-    assert len(frames) == len(need), (len(frames), len(need))
     out = bytearray(); prev = 0; qs = []
     for a, b in runs:
         out += es[prev:gops[a][0]]
-        seg = [frames[i] for i in range(first[a], first[b + 1])]
         budget = gops[b][1] - gops[a][0]
-        for q in Q_STEPS:
-            enc = encode(seg, q, bitrate(es))
-            if len(enc) <= budget: break
-        assert len(enc) <= budget, (name, a, b)
-        assert sum(gop_frames(enc, split_gops(enc))) == len(seg)
-        out += enc + b'\0' * (budget - len(enc)); prev = gops[b][1]; qs.append(q)
+        orig = es[gops[a][0]:gops[b][1]]
+        n_in = min(len(frames), int(first[min(len(gops), b + 3)]))
+        aligned = None; encs = {}
+        for lat in (0, 16384, 65536):
+            for q in Q_STEPS:
+                if q not in encs:
+                    full = encode(frames[:n_in], q, bitrate(es)); ge = split_gops(full)
+                    assert gop_frames(full, ge)[a:b + 1] == nf[a:b + 1], (name, a, b, 'gop layout differs')
+                    encs[q] = full[ge[a][0]:ge[b][1]]
+                enc = encs[q]
+                if len(enc) <= budget: aligned = align(orig, enc, lat)
+                if aligned is not None: break
+            if aligned is not None: break
+        assert aligned is not None, (name, a, b)
+        assert len(aligned) == budget
+        out += aligned; prev = gops[b][1]; qs.append((q, lat))
     out += es[prev:]
     assert len(out) == len(es)
     dst = pss.put_video_es(src, bytes(out))

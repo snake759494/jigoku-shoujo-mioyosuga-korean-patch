@@ -21,7 +21,7 @@ python tools/img_specs/ime.py         # 이름 입력 애니메이션
 python tools/movie_sub.py
 python tools/build.py                 # -> Jigoku_Shoujo_Mioyosuga_KR.iso
 python tools/qa_leftover.py           # 결과 ISO의 일본어 잔존 전수 검사
-xdelta3 -e -9 -S none -A -s "Jigoku Shoujo Mioyosuga (Japan).iso" Jigoku_Shoujo_Mioyosuga_KR.iso Jigoku_Shoujo_Mioyosuga_PS2_KO_v1.0.xdelta
+xdelta3 -e -9 -S none -A -s "Jigoku Shoujo Mioyosuga (Japan).iso" Jigoku_Shoujo_Mioyosuga_KR.iso Jigoku_Shoujo_Mioyosuga_PS2_KO_v1.0.1.xdelta
 ```
 
 ## 번역 자료
@@ -31,8 +31,8 @@ xdelta3 -e -9 -S none -A -s "Jigoku Shoujo Mioyosuga (Japan).iso" Jigoku_Shoujo_
 - `translation/img_survey.tsv`: 글자가 있는 이미지 조사표
 - `movie/subs/*.tsv`: 동영상 자막 (`시작초<TAB>끝초<TAB>문장`)
 
-## 검증 결과 (v1.0)
+## 검증 결과 (v1.0.1)
 - `check_text.py`: 78개 파일 오류 0건
 - `qa_leftover.py`: 스크립트 문자열 11,101개 중 일본어 잔존 0건
-- xdelta 왕복: 결과 ISO SHA-1 `ac339d228a315a141ac935cedac9e42d477072c3` 일치
+- xdelta 왕복: 결과 ISO SHA-1 `0953ab4d7333269430f107320bbabd08b1d7f36d` 일치
 - 실기: PCSX2 v2.2.0에서 대사창, 이름 칸, 메뉴 확인 (사용자 스크린샷)

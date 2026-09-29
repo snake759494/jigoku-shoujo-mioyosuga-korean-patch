@@ -1,0 +1,26 @@
+{
+ "source": {
+  "md5": "04036956b9319fbd217d3deeac79d8e1",
+  "sha1": "f119f85a2e0999e62c102ca45b2e3f6114b86c37",
+  "sha256": "942edac33f7b8be0ab571fb5fd92d93fb6a3ffd9d6229a2f6441ed0f3bb3e0c1",
+  "size": 1534787584
+ },
+ "patch": {
+  "md5": "96f1925125c450a5987e7dc12f614ad9",
+  "sha1": "2b168e366ad5652730b458eef90d2b8ef09d5057",
+  "sha256": "0917540aca47d45be1d1ba23cfdcaefd850a4154bb726158df79e98bbda3a070",
+  "size": 19607698
+ },
+ "output": {
+  "md5": "aec58d9132dba124c3c820ecc28a2048",
+  "sha1": "0953ab4d7333269430f107320bbabd08b1d7f36d",
+  "sha256": "07c3ff72d45eb63e7e631a9966f975b20e679cfe91c14d48b686676aee7efc39",
+  "size": 1534787584
+ },
+ "roundtrip": {
+  "md5": "aec58d9132dba124c3c820ecc28a2048",
+  "sha1": "0953ab4d7333269430f107320bbabd08b1d7f36d",
+  "sha256": "07c3ff72d45eb63e7e631a9966f975b20e679cfe91c14d48b686676aee7efc39",
+  "size": 1534787584
+ }
+}

@@ -1,10 +1,10 @@
 # 지옥소녀 미오요스가 PS2 한글패치
 
-PS2 일본판 **地獄少女 みおよすが (SLPM-55213)**용 비공식 한국어 패치입니다. 대사 전부, 실행파일 안의 시스템·도움말 문자열, 메뉴·이름판·장 카드 등 이미지 글자를 한국어로 바꾸고, 음성만 있던 동영상 2편에 한글 자막을 넣었습니다. 현재 배포판은 **v1.0 (2026-09-26)**입니다.
+PS2 일본판 **地獄少女 みおよすが (SLPM-55213)**용 비공식 한국어 패치입니다. 대사 전부, 실행파일 안의 시스템·도움말 문자열, 메뉴·이름판·장 카드 등 이미지 글자를 한국어로 바꾸고, 음성만 있던 동영상 2편에 한글 자막을 넣었습니다. 현재 배포판은 **v1.0.1 (2026-09-29)**입니다.
 
 [패치 다운로드](https://github.com/snake759494/jigoku-shoujo-mioyosuga-korean-patch/releases/latest) · [기술 설명](docs/TECHNICAL.md) · [재빌드](docs/BUILD.md) · [변경 기록](CHANGELOG.md) · [권리 안내](RIGHTS.md)
 
-릴리즈 첨부 파일은 **Jigoku_Shoujo_Mioyosuga_PS2_KO_v1.0.xdelta 하나**입니다. 저장소에는 제작 소스·번역·검증 자료만 공개합니다. 원본 및 완성 ISO, 추출한 실행파일·아카이브·이미지·동영상, 글꼴 파일, 외부 실행 파일은 포함하지 않습니다. GitHub 가 자동 생성하는 Source code ZIP/TAR 는 저장소 소스의 압축본이며 게임 파일이 아닙니다.
+릴리즈 첨부 파일은 **Jigoku_Shoujo_Mioyosuga_PS2_KO_v1.0.1.xdelta 하나**입니다. 저장소에는 제작 소스·번역·검증 자료만 공개합니다. 원본 및 완성 ISO, 추출한 실행파일·아카이브·이미지·동영상, 글꼴 파일, 외부 실행 파일은 포함하지 않습니다. GitHub 가 자동 생성하는 Source code ZIP/TAR 는 저장소 소스의 압축본이며 게임 파일이 아닙니다.
 
 ## 게임 소개 및 대상 버전
 
@@ -21,10 +21,10 @@ PS2 일본판 **地獄少女 みおよすが (SLPM-55213)**용 비공식 한국�
 | 원본 크기 | 1,534,787,584 바이트 |
 | **원본 MD5** | `04036956b9319fbd217d3deeac79d8e1` |
 | 원본 SHA-256 | `942edac33f7b8be0ab571fb5fd92d93fb6a3ffd9d6229a2f6441ed0f3bb3e0c1` |
-| xdelta 파일 크기 | 32,190,157 바이트 |
-| xdelta SHA-256 | `ee41aec514a2c4b5f0e4334dc2943deef62b55d0c81bcf33e78d7916ec632e1e` |
+| xdelta 파일 크기 | 19,607,698 바이트 |
+| xdelta SHA-256 | `0917540aca47d45be1d1ba23cfdcaefd850a4154bb726158df79e98bbda3a070` |
 | 적용 결과 ISO 크기 | 1,534,787,584 바이트 (원본과 같음) |
-| 적용 결과 ISO SHA-256 | `d471cefe7d2c75b56adc87490ca6176815c95578849e92f9771e4d3255ced967` |
+| 적용 결과 ISO SHA-256 | `07c3ff72d45eb63e7e631a9966f975b20e679cfe91c14d48b686676aee7efc39` |
 
 원본 게임 파일은 사용자가 별도로 준비해야 합니다. 항상 위 원본에 적용하세요.
 
@@ -40,10 +40,10 @@ Get-FileHash -Algorithm MD5 -LiteralPath '.\Jigoku Shoujo Mioyosuga (Japan).iso'
 
 ### xdelta UI 사용
 
-1. 릴리즈에서 `Jigoku_Shoujo_Mioyosuga_PS2_KO_v1.0.xdelta` 를 받습니다.
+1. 릴리즈에서 `Jigoku_Shoujo_Mioyosuga_PS2_KO_v1.0.1.xdelta` 를 받습니다.
 2. xdelta3 패치를 지원하는 도구의 **Apply Patch** 기능을 엽니다.
 3. **Patch** 에 xdelta 파일, **Source File** 에 해시가 일치하는 원본 ISO 를 선택합니다.
-4. **Output File** 에 새 파일명(예: `Jigoku Shoujo Mioyosuga (Korean v1.0).iso`)을 지정합니다.
+4. **Output File** 에 새 파일명(예: `Jigoku Shoujo Mioyosuga (Korean v1.0.1).iso`)을 지정합니다.
 5. 적용 후 결과 ISO 의 SHA-256 을 위 표와 비교합니다.
 
 xdelta 는 호환성을 위해 2차 압축과 파일 경로 헤더 없이 만들었습니다. xdelta 자체는 [공식 프로젝트](https://github.com/jmacd/xdelta)를 참고하세요.
@@ -51,13 +51,13 @@ xdelta 는 호환성을 위해 2차 압축과 파일 경로 헤더 없이 만들
 ### 명령줄 사용
 
 ```powershell
-.\xdelta3.exe -d -s '.\Jigoku Shoujo Mioyosuga (Japan).iso' '.\Jigoku_Shoujo_Mioyosuga_PS2_KO_v1.0.xdelta' '.\Jigoku Shoujo Mioyosuga (Korean v1.0).iso'
+.\xdelta3.exe -d -s '.\Jigoku Shoujo Mioyosuga (Japan).iso' '.\Jigoku_Shoujo_Mioyosuga_PS2_KO_v1.0.1.xdelta' '.\Jigoku Shoujo Mioyosuga (Korean v1.0.1).iso'
 ```
 
 해시를 자동 검사하는 도구도 있습니다(Python 3 + xdelta3 필요, 기존 출력 파일은 덮어쓰지 않음).
 
 ```powershell
-python tools/apply_release.py --xdelta '.\xdelta3.exe' --source '.\원본.iso' --patch '.\Jigoku_Shoujo_Mioyosuga_PS2_KO_v1.0.xdelta' --output '.\Korean.iso'
+python tools/apply_release.py --xdelta '.\xdelta3.exe' --source '.\원본.iso' --patch '.\Jigoku_Shoujo_Mioyosuga_PS2_KO_v1.0.1.xdelta' --output '.\Korean.iso'
 ```
 
 ### PCSX2 에서 실행
